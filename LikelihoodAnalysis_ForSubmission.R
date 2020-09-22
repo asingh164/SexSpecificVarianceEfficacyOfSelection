@@ -8,10 +8,9 @@
 ###   phi parameter which is the factor by which male fitness variance is greater than male fitness variance                                           ###
 ###########################################################################################################################################################
 ###########################################################################################################################################################
-rm(list=ls())
 
 # This script will generate plots corresponding to Figure 3, and Supplemental Figures S4-S10. Corresponding figures are denoted in the script below:
-#   Figure 3: Line 518 ## Line numbers assume that this line is on line 14, if not add or subtract the amount to get this line onto line 14
+#   Figure 3: Line 518 ## Line numbers assume that this line is on line 13, if not add or subtract the amount to get this line onto line 13
 #   Figure S4: Line 485
 #   Figure S5: Line 434
 #   Figure S6: Line 383
@@ -26,6 +25,7 @@ rm(list=ls())
 ###########################################
 ## 1. Setting up Packages and Data files ##
 ###########################################
+rm(list=ls())
 
 # Loading packages 
 require(doBy)
