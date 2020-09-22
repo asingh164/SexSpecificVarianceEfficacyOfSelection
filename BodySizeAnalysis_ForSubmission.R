@@ -24,7 +24,6 @@ require(ggplot2)
 require(wesanderson) # Don't think I used this, but maybe I'll go back and make the files look nice
 
 ##  Reading body size data into R
-# Original location of data was: /Users/amardeepsingh/Dropbox/Grad School Stuff/My Research/Environmental Heterogeneity and Mating Regieme Project/Data/Data Files for Dryad
 bodysize.data=read.csv("/FILE/PATH/TO/DATA/BodyMassDataNeprojectFinalSept2020.csv")
 
 
