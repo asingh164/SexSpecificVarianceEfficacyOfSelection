@@ -1,0 +1,90 @@
+#
+
+# Metadata for all data files 
+# Data correspond to Singh A., A.F.A. Agrawal. 2020. Sex-specific Variance and the Efficacy of Selection
+
+###########################################################################
+###########################################################################
+### 	F I L E    N A M E:   BodyMassDataNeprojectFinalSept2020.csv 	###
+###########################################################################
+###########################################################################
+
+# Column info:
+mating.regime: Each mating regime was assayed separate assays (due to logistic reasons). This column indicated which assay the flies were being reared for (measured flies were not assayed for fitness but were reared in the same larval environments as those that were and are genetically identical)
+
+block: Assay block
+
+stock: Genotype/stock; inbred = focal individuals, sim = Similkameen, bw = Dahomey with introgressed bw[D] marker
+
+treatment: larval treatment that files were reared in; high = high density (i.e., low condition), low = low density (i.e., high condition)
+
+replicate: replicate number
+
+sex: sex of individuals weighted
+
+sample.size: number of flies weighted
+
+total.mass: total mass of all individuals (i.e., sample.size)
+
+mean.mass.per.flt: total.mass / sample.size
+
+
+###########################################################################
+###########################################################################
+### 	F I L E    N A M E:   FitnessDataNeprojectFinalSept2020.csv 	###
+###########################################################################
+###########################################################################
+
+## Column info:
+treatment: mating regime that fitness was assayed in: vial = simple mating environment, cage = complex mating environment, monogamy = monogamy treatment (straws)
+
+block: Assay block 
+
+population.type: Refers to population composition of adults in mating regimes. 1 = 100%/0% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 2 = 75%/25% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 3 = 50%/50% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 4 = 25%/75% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 5 = 0%/100% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments
+
+sex: sex of focal individual whose fitness was assayed
+
+replicate: replicate 
+
+focal.individual.density.treatment: Larval density treatment that focal individual was reared in 	
+
+n.wt.males: number of wild type male offspring (i.e., red eyes)	
+
+n.wt.females: number of wild type female offspring (i.e., red eyes)
+
+n.wt: total number of wild type offspring (i.e., n.wt.males+n.wt.females)
+
+n.bw.male: number of bw[D] type male offspring (i.e., brown eyes)	
+
+n.bw.females: number of bw[D] type female offspring (i.e., brown eyes)		
+
+n.bw: total number of bw[D] type offspring (i.e., n.bw.male+n.bw.females)	
+
+n.total: total number of offspring (i.e., n.wt + n.bw)
+
+
+
+###########################################################################
+###########################################################################
+### 	F I L E    N A M E:   BootstrappedFitnessDataFinalSept2020.csv 	###
+###########################################################################
+###########################################################################
+
+# Column info:
+treatment: mating regime that fitness was assayed in: vial = simple mating environment, cage = complex mating environment, monogamy = monogamy treatment (straws)
+
+population.type: Refers to population composition of adults in mating regimes. 1 = 100%/0% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 2 = 75%/25% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 3 = 50%/50% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 4 = 25%/75% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 5 = 0%/100% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments
+
+sex: sex of focal individual whose fitness was assayed
+
+replicate: replicate
+
+mean.wt: mean number of wt offspring in bootstrapped sample
+
+var.wt: variance in number of wt offspring in bootstrapped sample
+
+adjusted.variance: adjusted variance in number of wt offspring in bootstrapped data (see paper for details on how/when/why this adjustment was applied)
+
+
+
+#
