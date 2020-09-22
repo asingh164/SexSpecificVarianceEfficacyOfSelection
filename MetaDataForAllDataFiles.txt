@@ -1,7 +1,5 @@
-#
-
-# Metadata for all data files 
-# Data correspond to Singh A., A.F. Agrawal. 2020. Sex-specific Variance and the Efficacy of Selection
+### Metadata for all data files 
+## Data correspond to Singh A., A.F. Agrawal. 2020. Sex-specific Variance and the Efficacy of Selection
 
 ###########################################################################
 ###########################################################################
@@ -9,24 +7,23 @@
 ###########################################################################
 ###########################################################################
 
-# Column info:
-mating.regime: Each mating regime was assayed separate assays (due to logistic reasons). This column indicated which assay the flies were being reared for (measured flies were not assayed for fitness but were reared in the same larval environments as those that were and are genetically identical)
+column1: mating.regime: Each mating regime was assayed separate assays (due to logistic reasons). This column indicated which assay the flies were being reared for (measured flies were not assayed for fitness but were reared in the same larval environments as those that were and are genetically identical)
 
-block: Assay block
+column2: block: Assay block
 
-stock: Genotype/stock; inbred = focal individuals, sim = Similkameen, bw = Dahomey with introgressed bw[D] marker
+column3: stock: Genotype/stock; inbred = focal individuals, sim = Similkameen, bw = Dahomey with introgressed bw[D] marker
 
-treatment: larval treatment that files were reared in; high = high density (i.e., low condition), low = low density (i.e., high condition)
+column4: treatment: larval treatment that files were reared in; high = high density (i.e., low condition), low = low density (i.e., high condition)
 
-replicate: replicate number
+column5: replicate: replicate number
 
-sex: sex of individuals weighted
+column6: sex: sex of individuals weighted
 
-sample.size: number of flies weighted
+column7: sample.size: number of flies weighted
 
-total.mass: total mass of all individuals (i.e., sample.size)
+column8: total.mass: total mass of all individuals (i.e., sample.size)
 
-mean.mass.per.flt: total.mass / sample.size
+column9: mean.mass.per.flt: total.mass / sample.size
 
 
 ###########################################################################
@@ -35,32 +32,31 @@ mean.mass.per.flt: total.mass / sample.size
 ###########################################################################
 ###########################################################################
 
-## Column info:
-treatment: mating regime that fitness was assayed in: vial = simple mating environment, cage = complex mating environment, monogamy = monogamy treatment (straws)
+column1: treatment: mating regime that fitness was assayed in: vial = simple mating environment, cage = complex mating environment, monogamy = monogamy treatment (straws)
 
-block: Assay block 
+column2: block: Assay block 
 
-population.type: Refers to population composition of adults in mating regimes. 1 = 100%/0% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 2 = 75%/25% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 3 = 50%/50% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 4 = 25%/75% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 5 = 0%/100% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments
+column3: population.type: Refers to population composition of adults in mating regimes. 1 = 100%/0% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 2 = 75%/25% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 3 = 50%/50% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 4 = 25%/75% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 5 = 0%/100% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments
 
-sex: sex of focal individual whose fitness was assayed
+column4: sex: sex of focal individual whose fitness was assayed
 
-replicate: replicate 
+column5: replicate: replicate 
 
-focal.individual.density.treatment: Larval density treatment that focal individual was reared in 	
+column6: focal.individual.density.treatment: Larval density treatment that focal individual was reared in 	
 
-n.wt.males: number of wild type male offspring (i.e., red eyes)	
+column7: n.wt.males: number of wild type male offspring (i.e., red eyes)	
 
-n.wt.females: number of wild type female offspring (i.e., red eyes)
+column8: n.wt.females: number of wild type female offspring (i.e., red eyes)
 
-n.wt: total number of wild type offspring (i.e., n.wt.males+n.wt.females)
+column9: n.wt: total number of wild type offspring (i.e., n.wt.males+n.wt.females)
 
-n.bw.male: number of bw[D] type male offspring (i.e., brown eyes)	
+column10: n.bw.male: number of bw[D] type male offspring (i.e., brown eyes)	
 
-n.bw.females: number of bw[D] type female offspring (i.e., brown eyes)		
+column11: n.bw.females: number of bw[D] type female offspring (i.e., brown eyes)		
 
-n.bw: total number of bw[D] type offspring (i.e., n.bw.male+n.bw.females)	
+column12: n.bw: total number of bw[D] type offspring (i.e., n.bw.male+n.bw.females)	
 
-n.total: total number of offspring (i.e., n.wt + n.bw)
+column13: n.total: total number of offspring (i.e., n.wt + n.bw)
 
 
 
@@ -70,20 +66,19 @@ n.total: total number of offspring (i.e., n.wt + n.bw)
 ###########################################################################
 ###########################################################################
 
-# Column info:
-treatment: mating regime that fitness was assayed in: vial = simple mating environment, cage = complex mating environment, monogamy = monogamy treatment (straws)
+column1: treatment: mating regime that fitness was assayed in: vial = simple mating environment, cage = complex mating environment, monogamy = monogamy treatment (straws)
 
-population.type: Refers to population composition of adults in mating regimes. 1 = 100%/0% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 2 = 75%/25% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 3 = 50%/50% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 4 = 25%/75% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 5 = 0%/100% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments
+column2: population.type: Refers to population composition of adults in mating regimes. 1 = 100%/0% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 2 = 75%/25% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 3 = 50%/50% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 4 = 25%/75% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments; 5 = 0%/100% of Adults in mating regime were reared in low/high density (i.e., high/low condition) larval environments
 
-sex: sex of focal individual whose fitness was assayed
+column3: sex: sex of focal individual whose fitness was assayed
 
-replicate: replicate
+column4: replicate: replicate
 
-mean.wt: mean number of wt offspring in bootstrapped sample
+column5: mean.wt: mean number of wt offspring in bootstrapped sample
 
-var.wt: variance in number of wt offspring in bootstrapped sample
+column6: var.wt: variance in number of wt offspring in bootstrapped sample
 
-adjusted.variance: adjusted variance in number of wt offspring in bootstrapped data (see paper for details on how/when/why this adjustment was applied)
+column7: adjusted.variance: adjusted variance in number of wt offspring in bootstrapped data (see paper for details on how/when/why this adjustment was applied)
 
 
 
