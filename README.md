@@ -4,9 +4,9 @@ This repository contains code and data underlying the figures and analyses assoc
 ## Code 
 Code is all written in R. Coding scripts are ordered roughly in the order that the data are presented in the paper. All figures and tables in the paper and supplement are replicable (with the code provided). NOTE: Although the data in the figures is identical to that in the paper + supplement, the figures will not appear exactly the same as I processed figures after generating the basic plot in R (Fonts, labels, panels etc.).
 
-<i>Be sure to read the info at the top of each script. There are several places where you will need to specify a file path either to a data file or for saving outputs</i>
+<i><b>Be sure to read the info a the top of each script. There are several places where you will need to specify a file path either to a data file or for saving outputs</i></b>
 
-NOTE: These scripts are some of the first that I had written in R and as such they may not be as pretty, efficient or succinct as they could be.  ¯\\_(ツ)_/¯
+<i>NOTE: These scripts are some of the first that I had written in R and as such they may not be as pretty, efficient or succinct as they could be.</i>  ¯\\_(ツ)_/¯
 
 There are 6 R scripts in total: 
 1. [1_TheoreticalModelAnalysis_ForSubmission.R](https://github.com/asingh164/SexSpecificVarianceEfficacyOfSelection/blob/master/1_TheoreticalModelAnalysis_ForSubmission.R): Script that produces figures to plot results from a simple theoretical model presented in the paper.
