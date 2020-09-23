@@ -2,8 +2,8 @@
 
 This repository contains code and data underlying the figures and analyses associated with Singh, A. and Agrawal, A.F., 2020. Sex Specific Variance and the Efficacy of Selection
 
-##### Citation:
-##### Title: Sex Specific Variance and the Efficacy of Selection
+####### Citation:
+###### Title: Sex Specific Variance and the Efficacy of Selection
 ##### Authors: Amardeep Singh and Aneil Agrawal
 ##### Year: 2020
 ##### Journal: XXX 
