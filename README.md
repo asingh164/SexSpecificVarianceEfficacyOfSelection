@@ -1,5 +1,16 @@
 # Sex Specific Variance and the Efficacy of Selection
+
 This repository contains code and data underlying the figures and analyses associated with Singh, A. and Agrawal, A.F., 2020. Sex Specific Variance and the Efficacy of Selection
+
+###Citation
+### Title: Sex Specific Variance and the Efficacy of Selection
+## Authors: Amardeep Singh and Aneil Agrawal
+## Journal: XXX 
+## DOI: XXX
+
+## Abstract: 
+The variance in fitness is thought to be greater in males than in females in many species. If this is so, there are two potentially contradictory consequences on the efficacy of selection (Nes): greater variance in fitness may allow stronger selection (i.e., increased s) but it will also cause stronger genetic drift (i.e., reduced Ne). We develop a simple model to ask how the stronger condition-dependency of fitness in males than females affects selection and fitness variance in each sex in order to examine the net effect on the efficacy of selection. We then present estimates of the phenotypic variance in fitness for each sex in Drosophila melanogaster in different contexts expected to alter sex-specific variances. The variance in fitness was not altered substantially by mating regime or degree of heterogeneity in the rearing environment. Sex differences in the variance in fitness were, at most, modestly higher in males than in females. An explanation for our data is that sexually-independent stochastic processes such as juvenile mortality are a major source of variation that dampen sex differences in fitness variation. In general, strong selection through males can occur without a large increase in the strength of drift in systems where ‘random’ mortality is high.
+
 
 ## Code 
 Code is all written in R. Coding scripts are ordered roughly in the order that the data are presented in the paper. All figures and tables in the paper and supplement are replicable (with the code provided). NOTE: Although the data in the figures is identical to that in the paper + supplement, the figures will not appear exactly the same as I processed figures after generating the basic plot in R (Fonts, labels, panels etc.).
