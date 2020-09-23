@@ -9,22 +9,35 @@
 # This script will organize and summarize the main variance in sex-specific fitness data and generate Figure 2 and Figure 3 of the main text
 # The script below assumes that you have bootstrapped estimates of variance in fitness to obtain 95% CIs for plotting. 
 #     Therefore, make sure to run the "" script and save the bootstrapped data  
-# Below, I have organized this script such that there are 'code chunks' that can be run to generate each figure. You need to run through step 1 to set up 
-#  the data, but then you can run code for each figure separately 
+# Below, I have organized this script into several parts:
+#   Part 1  sets up the data, Parts 2 and 3 generates plots corresponding to Figure 2 and Figure 3
+#   Part 4 and Part 5 generates the data in Table 2 and Table 3 respectively. 
+#   Part 6 will replicate the statistical analyses for comparing means and variances in fitness across the sexes, mating regimes and population types
+
+#   To generate figures there are 'code chunks' that can be run to generate each figure. You need to run through step 1 to set up the data first though
+# NOTE: YOU WILL NEED TO SPECIFY THE PATH TO DATA FILES BELOW BY REPLACING "/FILE/PATH/TO/" WITH YOUR ACTUAL FILE PATHS 
+
 
 ###########################################
-## 1. Setting up Packages and Data files ##
+## 1. Setting up Packages and Data files ##       ## This section needs to be run for everything downstream and these dataframes must not be dumped!
 ###########################################
 rm(list=ls())
 
-##### Data Summarization ####
-#require(plyr)
+##### Initial Data Summary ####
+
+# Loading required packages 
 require(doBy)
+require(ggplot2)
 
 # Reading in fitness data
 data=read.csv("/FILE/PATH/TO/FitnessDataNeprojectFinalSept2020.csv", header = TRUE, sep = ",")
 # Reading in data from bootstrap procedure 
 bootstrapped.data=read.csv("/FILE/PATH/TO/BootstrappedFitnessDataFinalSept2020.csv")
+
+data=read.csv("/Users/amardeepsingh/Dropbox/Grad School Stuff/My Research/Environmental Heterogeneity and Mating Regieme Project/Data/Data Files for Dryad/FitnessDataNeprojectFinalSept2020.csv", header = TRUE, sep = ",")
+# Reading in data from bootstrap procedure 
+bootstrapped.data=read.csv("/Users/amardeepsingh/Dropbox/Grad School Stuff/My Research/Environmental Heterogeneity and Mating Regieme Project/Data/Data Files for Dryad/BootstrappedFitnessDataFinalSept2020.csv")
+
 
 ##NOTE in these datasets population/population.type 1 and 2 refer to the low heterogenity treatments (i.e. 100% high/low condition individuals respectively)
 ## "high" and "low" refer to larval densities in the focal.individual column
@@ -41,9 +54,9 @@ data.summary$adjusted.variance = (2/data.summary$n.wt.mean)* (1 - (2/data.summar
 data.summary$sex = gsub('m', 'male', data.summary$sex)
 data.summary$sex = gsub('f', 'female', data.summary$sex)
 
-##########################################################
-## Figure 2: Adjusted Variance in Sex-Specific Fitness  ##
-##########################################################
+#############################################################
+## 2. Figure 2: Adjusted Variance in Sex-Specific Fitness  ##
+#############################################################
 
 # Assign 95% CIs for each estimated variance and adjusted variance Values
 # Run this loop to get a colum of the lower and upper 95% CI for each variance and adjusted variance value
@@ -105,9 +118,9 @@ var.plot=ggplot(data.summary.figure2, aes(y = adjusted.variance))+
 var.plot
 
 
-################################################################
-## Figure 3: Plotting the ratio r of Ne_mf*s_mf / Ne_ff*s_ff  ##
-################################################################
+###################################################################
+## 3. Figure 3: Plotting the ratio r of Ne_mf*s_mf / Ne_ff*s_ff  ##
+###################################################################
 # Plot of the the ratio of Ne*s in a population of males and females (i.e., Ne_mf*s_mf) relative to a population where males are "female-like" with 
 #   respect to the variance in fitness and strength of selection (i.e., Ne_ff*s_ff)
 
@@ -210,5 +223,191 @@ Nes.plot=ggplot(Ne.df, aes(y = ratio.of.Nes)) +
   scale_fill_manual(values = "#FFA500") +
   facet_wrap(~population.type, nrow=1, strip.position = "bottom", scale = "free_x") 
 Nes.plot
+
+
+######################################################
+## 4.  Table 2: Summary Table for Adjusted variance ##
+######################################################
+# NOTE: Point estimates reported in Table 2 of the main text are the ACTUAL estimates of variances. Estimates reported in the summary table below are those means from the bootstrapped data.
+#       Confidence intervals of estimates reported in Table 2 correspond to the 95% quantiles in the summary table below.
+
+## Function to calculate the adjusted variance in fitness ## NOTE: We didn't end up using this, but and instead found that this adjustment could be used even when the 
+#   mean was > 2 (see Supplemental Materials of the paper). Left code here just for legacy to remind me of what we did and why
+# If the mean of the resample is < or = 2 then use the obsered variance 
+#adjusted.variance.function  = function(mean, variance){
+#  ifelse (mean > 2, ((2 / mean)*(1 - (2/mean))*(mean) + ((2 / mean)^2 * (variance))), variance)
+#}
+## Replace female monogamy with var because the mean was greater than 2
+#for (i in 1:nrow(bootstrapped.data)){
+#  if (bootstrapped.data[i,"treatment"] == "monogamy" & bootstrapped.data[i,"sex"] == "female") {
+#    bootstrapped.data[i,9] = bootstrapped.data[i,7] 
+#  } else {
+#  }
+#}
+
+# This is the actual function we applied
+adjusted.variance.function  = function(mean, variance){
+  ((2 / mean)*(1 - (2/mean))*(mean)) + ((2 / mean)^2 * (variance))
+}
+bootstrapped.data$adjusted.variance.alternative = adjusted.variance.function(bootstrapped.data$mean.wt, bootstrapped.data$var.wt)
+
+## Summary table for adjusted variance for each sex * treatment combination ## This summary correspoinds to Table 2 in the main text (except the point estimates are not identical! - See above Note)
+adj.variance.summary.table = summaryBy(adjusted.variance.alternative ~ treatment+population.type+sex, FUN = c(mean, quantile.function.lower,quantile.function.upper), data = bootstrapped.data)
+
+
+##########################################################
+## 5.  Table 3:  Summary table for Ne and Ratios of Ne  ##
+##########################################################
+# NOTE: Point estimates reported in Table 3 of the main text are the ACTUAL estimates of variances. Estimates reported in the summary table below are those means from the bootstrapped data.
+#       Confidence intervals of estimates reported in Table 3 correspond to the 95% quantiles in the summary table below.
+# NOTE: There are two summary dataframes generated below, one that corresponds to to columns 1 and 2 and Table 3 and one that corresponds to column 3 of Table 3 - This info is denoted next to commands
+# Merge dataframe so that male and female variance for each population type and mating regime are on a single line 
+male.tmp = bootstrapped.data[bootstrapped.data$sex == "male", ]
+female.tmp = bootstrapped.data[bootstrapped.data$sex == "female",]
+
+Ne.summary.table.tmp = merge(male.tmp, female.tmp, by.x=c("treatment", "population.type", "replicate"), by.y = c("treatment", "population.type", "replicate"), sort = FALSE)
+Ne.summary.table.tmp = Ne.summary.table.tmp[,c(1:3,7,12)]
+colnames(Ne.summary.table.tmp) = c("treatment", "population.type", "replicate", "male.adj.var", "female.adj.var")
+
+Ne.summary.table.tmp$Ne_mf = 8*(32) / (Ne.summary.table.tmp$male.adj.var + Ne.summary.table.tmp$female.adj.var + 4)
+Ne.summary.table.tmp$Ne_ff = 8*(32) / (Ne.summary.table.tmp$female.adj.var + Ne.summary.table.tmp$female.adj.var + 4)
+
+# Summary of Ne Data ## Columns 1 and 2 in Table 3 in the main text
+Ne_mf.summary.table = summaryBy(Ne_mf ~ treatment + population.type, FUN = c(mean, quantile.function.lower, quantile.function.upper), data = Ne.summary.table.tmp)
+Ne_ff.summary.table = summaryBy(Ne_ff ~ treatment + population.type, FUN = c(mean, quantile.function.lower, quantile.function.upper), data = Ne.summary.table.tmp)
+
+# Summary for ratio of Ne_mf / Ne_ff ## Column 3 in Table 3 of the main text
+Ne.ratio.summary = Ne.summary.table.tmp[,1:3]
+Ne.ratio.summary$ratio = Ne.summary.table.tmp$Ne_mf / Ne.summary.table.tmp$Ne_ff
+Ne.ratio.summary$Nes = (Ne.summary.table.tmp$Ne_mf / Ne.summary.table.tmp$Ne_ff) * 1.25
+
+Ne.ratio.summary.table = summaryBy(ratio ~ treatment + population.type, FUN = c(mean, quantile.function.lower, quantile.function.upper), data = Ne.ratio.summary)
+## "Ne.Nes.summary.table" corresponds to Column 3 in Table 3 of the main text
+Ne.Nes.summary.table = summaryBy(Nes ~ treatment + population.type, FUN = c(mean, quantile.function.lower, quantile.function.upper), data = Ne.ratio.summary)
+
+
+#
+
+##########################################################################
+##  6. Statistical Analysis to Compare Mean and Variance in Fitness     ##
+##########################################################################
+# The script below will replicate the results presented in the paper for comparisions of means and variances in fitness in the Results text.
+# Statistical significance was assessed on the basis of non-overlapping 95% CIs
+
+#####   Comparison of means and variances between the sexes    #####
+
+male.data.mean = subset(bootstrapped.data[bootstrapped.data$sex == "male", ])$mean.wt
+female.data.mean = subset(bootstrapped.data[bootstrapped.data$sex == "female", ])$mean.wt
+mean.difference.between.sexes = male.data.mean - female.data.mean
+mean(mean.difference.between.sexes)
+quantile(mean.difference.between.sexes,c(0.05,0.95))
+
+male.data.variance.vial = subset(bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "vial", ])$adjusted.variance.alternative
+female.data.variance.vial = subset(bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "vial", ])$adjusted.variance.alternative
+male.data.variance.cage = subset(bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "cage", ])$adjusted.variance.alternative
+female.data.variance.cage = subset(bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "cage", ])$adjusted.variance.alternative
+male.data.variance.monogamy = subset(bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "monogamy", ])$adjusted.variance.alternative
+female.data.variance.monogamy = subset(bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "monogamy", ])$adjusted.variance.alternative
+
+male.data.variance = c(male.data.variance.vial,male.data.variance.cage, male.data.variance.monogamy)
+female.data.variance = c(female.data.variance.vial,female.data.variance.cage, female.data.variance.monogamy)
+
+# Comparison across all mating regimes 
+mean(male.data.variance - female.data.variance)
+quantile((male.data.variance - female.data.variance), c(0.05,0.95))
+
+# Comparison in Vials 
+mean(male.data.variance.vial - female.data.variance.vial)
+quantile((male.data.variance.vial - female.data.variance.vial), c(0.05,0.95))
+# Comparison in Cage
+mean(male.data.variance.cage - female.data.variance.cage)
+quantile((male.data.variance.cage - female.data.variance.cage), c(0.05,0.95))
+# Comparison in monogamy 
+mean(male.data.variance.monogamy - female.data.variance.monogamy)
+quantile((male.data.variance.monogamy - female.data.variance.monogamy), c(0.05,0.95))
+
+
+####       Comparison of variances across environments        #####
+
+# Comparison One -- Type1/5 with Type3
+# Males 
+male.population.type.1 = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$population.type == 1,])$adjusted.variance.alternative
+male.population.type.3 = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$population.type == 3,])$adjusted.variance.alternative
+male.population.type.5 = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$population.type == 5,])$adjusted.variance.alternative
+
+# Females 
+female.population.type.1 = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$population.type == 1,])$adjusted.variance.alternative
+female.population.type.3 = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$population.type == 3,])$adjusted.variance.alternative
+female.population.type.5 = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$population.type == 5,])$adjusted.variance.alternative
+
+low.het.males = (male.population.type.1 + male.population.type.5) / 2
+high.het.males = male.population.type.3
+
+low.het.females = (female.population.type.1 + female.population.type.5) / 2
+high.het.females = female.population.type.3
+
+print(c(mean(low.het.males - high.het.males), quantile((low.het.males - high.het.males), c(0.05,0.95))))
+print(c(mean(low.het.females - high.het.females), quantile((low.het.females - high.het.females), c(0.05,0.95))))
+
+# Comparison Two -- Type1/5 with Type3/4/5
+male.population.type.1 = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$population.type == 1 & bootstrapped.data$treatment != "monogamy",])$adjusted.variance.alternative
+male.population.type.2 = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$population.type == 2 & bootstrapped.data$treatment != "monogamy",])$adjusted.variance.alternative
+male.population.type.3 = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$population.type == 3 & bootstrapped.data$treatment != "monogamy",])$adjusted.variance.alternative
+male.population.type.4 = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$population.type == 4 & bootstrapped.data$treatment != "monogamy",])$adjusted.variance.alternative
+male.population.type.5 = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$population.type == 5 & bootstrapped.data$treatment != "monogamy",])$adjusted.variance.alternative
+
+# Females 
+female.population.type.1 = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$population.type == 1 & bootstrapped.data$treatment != "monogamy",])$adjusted.variance.alternative
+female.population.type.2 = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$population.type == 2 & bootstrapped.data$treatment != "monogamy",])$adjusted.variance.alternative
+female.population.type.3 = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$population.type == 3 & bootstrapped.data$treatment != "monogamy",])$adjusted.variance.alternative
+female.population.type.4 = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$population.type == 4 & bootstrapped.data$treatment != "monogamy",])$adjusted.variance.alternative
+female.population.type.5 = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$population.type == 5 & bootstrapped.data$treatment != "monogamy",])$adjusted.variance.alternative
+
+low.het.males = (male.population.type.1 + male.population.type.5) / 2
+high.het.males = (male.population.type.2 + male.population.type.3 + male.population.type.4) / 3
+
+low.het.females = (female.population.type.1 + female.population.type.5) / 2
+high.het.females = (female.population.type.2+ female.population.type.3 + female.population.type.4) / 3
+
+print(c(mean(low.het.males - high.het.males), quantile((low.het.males - high.het.males), c(0.05,0.95))))
+print(c(mean(low.het.females - high.het.females), quantile((low.het.females - high.het.females), c(0.05,0.95))))
+
+
+####     Comparison of variances across mating regimes        ####
+
+# Males 
+male.vial = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "vial", ])$adjusted.variance.alternative
+male.cage = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "cage",])$adjusted.variance.alternative
+male.vial.subset = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "vial" & bootstrapped.data$population.type == 1 | 
+                               bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "vial" & bootstrapped.data$population.type == 3 |
+                               bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "vial" & bootstrapped.data$population.type == 5 ,])$adjusted.variance.alternative
+male.cage.subset = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "cage" & bootstrapped.data$population.type == 1 | 
+                               bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "cage" & bootstrapped.data$population.type == 3 |
+                               bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "cage" & bootstrapped.data$population.type == 5 ,])$adjusted.variance.alternative
+male.monogamy = (bootstrapped.data[bootstrapped.data$sex == "male" & bootstrapped.data$treatment == "monogamy",])$adjusted.variance.alternative
+
+# Females 
+female.vial = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "vial", ])$adjusted.variance.alternative
+female.cage = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "cage",])$adjusted.variance.alternative
+female.vial.subset = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "vial" & bootstrapped.data$population.type == 1 | 
+                                 bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "vial" & bootstrapped.data$population.type == 3 |
+                                 bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "vial" & bootstrapped.data$population.type == 5 ,])$adjusted.variance.alternative
+female.cage.subset = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "cage" & bootstrapped.data$population.type == 1 | 
+                                 bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "cage" & bootstrapped.data$population.type == 3 |
+                                 bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "cage" & bootstrapped.data$population.type == 5 ,])$adjusted.variance.alternative
+female.monogamy = (bootstrapped.data[bootstrapped.data$sex == "female" & bootstrapped.data$treatment == "monogamy",])$adjusted.variance.alternative
+
+# Vial vs Cage
+print(c(mean(male.vial - male.cage), quantile((male.vial - male.cage), c(0.05,0.95))))
+print(c(mean(female.vial - female.cage), quantile((female.vial - female.cage), c(0.05,0.95))))
+
+# Polygamy versus monogamy 
+male.polygamy = (male.vial.subset + male.cage.subset) / 2
+female.polygamy = (female.vial.subset + female.cage.subset) / 2
+
+print(c(mean(male.polygamy - male.monogamy), quantile((male.polygamy - male.monogamy), c(0.05,0.95))))
+print(c(mean(female.polygamy - female.monogamy), quantile((female.polygamy - female.monogamy), c(0.05,0.95))))
+
+
 
 #
