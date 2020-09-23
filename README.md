@@ -6,6 +6,8 @@ Code is all written in R. Coding scripts are ordered roughly in the order that t
 
 <i>Be sure to read the info at the top of each script. There are several places where you will need to specify a file path either to a data file or for saving outputs</i>
 
+NOTE: These scripts are some of the first that I had written in R and as such they may not be as pretty, efficient or succinct as they could be. ¯\_(ツ)_/¯
+
 There are 6 R scripts in total: 
 1. [1_TheoreticalModelAnalysis_ForSubmission.R](https://github.com/asingh164/SexSpecificVarianceEfficacyOfSelection/blob/master/1_TheoreticalModelAnalysis_ForSubmission.R): Script that produces figures to plot results from a simple theoretical model presented in the paper.
 2. [2_BodySizeAnalysis_ForSubmission.R](https://github.com/asingh164/SexSpecificVarianceEfficacyOfSelection/blob/master/2_BodySizeAnalysis_ForSubmission.R): R script analyzing body size data. 
