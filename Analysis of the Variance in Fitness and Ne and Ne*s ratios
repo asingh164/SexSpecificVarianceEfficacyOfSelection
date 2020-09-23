@@ -1,0 +1,214 @@
+#############################################################################################################################################################
+#############################################################################################################################################################
+###   Script Details:                                                                                                                                     ###
+###   Analysis of the Variance in Fitness and Ne/Ne*s for Singh, A. A.F., Agrawal. 2020. Sex-Specific Variance in Fitness and the Efficacy of Selection   ###
+###   Script written by Amardeep Singh (amardeep.singh[at]utoronto.ca)                                                                                    ###
+#############################################################################################################################################################
+#############################################################################################################################################################
+
+# This script will organize and summarize the main variance in sex-specific fitness data and generate Figure 2 and Figure 3 of the main text
+# The script below assumes that you have bootstrapped estimates of variance in fitness to obtain 95% CIs for plotting. 
+#     Therefore, make sure to run the "" script and save the bootstrapped data  
+# Below, I have organized this script such that there are 'code chunks' that can be run to generate each figure. You need to run through step 1 to set up 
+#  the data, but then you can run code for each figure separately 
+
+###########################################
+## 1. Setting up Packages and Data files ##
+###########################################
+rm(list=ls())
+
+##### Data Summarization ####
+#require(plyr)
+require(doBy)
+
+# Reading in fitness data
+data=read.csv("/FILE/PATH/TO/FitnessDataNeprojectFinalSept2020.csv", header = TRUE, sep = ",")
+# Reading in data from bootstrap procedure 
+bootstrapped.data=read.csv("/FILE/PATH/TO/BootstrappedFitnessDataFinalSept2020.csv")
+
+##NOTE in these datasets population/population.type 1 and 2 refer to the low heterogenity treatments (i.e. 100% high/low condition individuals respectively)
+## "high" and "low" refer to larval densities in the focal.individual column
+
+data=as.data.frame(data)
+data$n.wt=as.numeric(as.character(data$n.wt))
+data=data[data$n.total == "32",] # Remove any observation where we have less than 32 offspring counted
+data=data[!(is.na(data$n.wt)),] # Remove any rows with NA in fitness column 
+
+data.summary=summaryBy(n.wt ~ treatment + population.type + sex, data=data, FUN = c(mean, var))
+# Apply the variance adjustment and calculate the adjusted variance (see Methods and Results for details)
+data.summary$adjusted.variance = (2/data.summary$n.wt.mean)* (1 - (2/data.summary$n.wt.mean))*data.summary$n.wt.mean + (2/data.summary$n.wt.mean)^2 * (data.summary$n.wt.var)
+# For convenience below, convert sex from m and f to male and female
+data.summary$sex = gsub('m', 'male', data.summary$sex)
+data.summary$sex = gsub('f', 'female', data.summary$sex)
+
+##########################################################
+## Figure 2: Adjusted Variance in Sex-Specific Fitness  ##
+##########################################################
+
+# Assign 95% CIs for each estimated variance and adjusted variance Values
+# Run this loop to get a colum of the lower and upper 95% CI for each variance and adjusted variance value
+treatment.levels = levels(bootstrapped.data$treatment)
+sex.levels = levels(bootstrapped.data$sex)
+population.type.levels = levels(as.factor((bootstrapped.data$population.type)))
+quantile.df = as.data.frame(matrix(NA, nrow = 25, ncol = 9))
+names(quantile.df) = c("treatment", "sex", "population", "mean.lower.ci", "mean.upper.ci", "unadj.lower.ci", "unadj.upper.ci", "adj.lower.ci", "adj.upper.ci")
+row = 0
+for (i in treatment.levels){
+  for (j in sex.levels){
+    for (k in population.type.levels){
+      bootstrapped.data.subset = bootstrapped.data[bootstrapped.data$treatment == i & bootstrapped.data$sex == j & bootstrapped.data$population.type == k ,]
+      row = row + 1
+      quantile.df[row,"treatment"] = i
+      quantile.df[row,"sex"] = j
+      quantile.df[row,"population"] = as.integer(k)
+      
+      
+      #calculating upper and lower CIs for mean, var and adj. var
+      quantile.df[row,"mean.lower.ci"] = as.numeric(quantile(bootstrapped.data.subset$mean.wt,c(0.05)))
+      quantile.df[row,"mean.upper.ci"] = as.numeric(quantile(bootstrapped.data.subset$mean.wt,c(0.95)))
+      
+      quantile.df[row,"unadj.lower.ci"] = as.numeric(quantile(bootstrapped.data.subset$var.wt,c(0.05)))
+      quantile.df[row,"unadj.upper.ci"] = as.numeric(quantile(bootstrapped.data.subset$var.wt,c(0.95)))
+      
+      quantile.df[row,"adj.lower.ci"] = as.numeric(quantile(bootstrapped.data.subset$adjusted.variance,c(0.05)))
+      quantile.df[row,"adj.upper.ci"] = as.numeric(quantile(bootstrapped.data.subset$adjusted.variance,c(0.95)))
+      
+    }
+  }
+}
+# Combine fitness data summary with CI estimates 
+data.summary.figure2 = merge(data.summary, quantile.df, by.x = c("sex", "treatment", "population.type"), by.y = c("sex", "treatment","population"), sort = FALSE)
+
+# Plot of adjusted variances 
+# Change labels of data for each population type 
+data.summary.figure2$population.type = data.summary$population.type
+data.summary.figure2$population.type = gsub(as.numeric(1), "A", data.summary.figure2$population.type)
+data.summary.figure2$population.type = gsub(as.numeric(2), "B", data.summary.figure2$population.type)
+data.summary.figure2$population.type = gsub(as.numeric(3), "C", data.summary.figure2$population.type)
+data.summary.figure2$population.type = gsub(as.numeric(4), "D", data.summary.figure2$population.type)
+data.summary.figure2$population.type = gsub(as.numeric(5), "E", data.summary.figure2$population.type)
+
+data.summary.figure2$population.type.label = paste("Population Type ", data.summary.figure2$population.type, sep = "")
+
+# Plotting Adjusted Variances ## Figure 2
+var.plot=ggplot(data.summary.figure2, aes(y = adjusted.variance))+
+  geom_point(aes(x=sex, shape=treatment, colour=sex), size = 6.5,  position=position_dodge(width=0.5))+
+  geom_errorbar(aes(ymin=adj.lower.ci, ymax=adj.upper.ci,x=sex, shape=treatment, colour=sex),size = 1.5, width=0.0,position=position_dodge(width=0.5)) + 
+  theme_bw() +
+  ylim(0, 10) +
+  theme(panel.grid.minor.x=element_blank(),panel.grid.minor.y=element_blank(),panel.grid.major.x=element_blank(), panel.grid.major.y=element_blank(),
+        text = element_text(size=40, family = "Times"), axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank(), 
+        axis.title.y = element_blank(), axis.text.y=element_text(colour = "black"), axis.ticks.y=element_line(colour = "black"),
+        strip.background = element_rect(colour = "black", fill = "light grey"), strip.text = element_text(size = 40), legend.position = "none") +
+  facet_wrap(~population.type, nrow = 1, strip.position="bottom", scale = "free_x") + 
+  scale_fill_manual(values=c("#F4A582", "#92C5DE")) 
+var.plot
+
+
+################################################################
+## Figure 3: Plotting the ratio r of Ne_mf*s_mf / Ne_ff*s_ff  ##
+################################################################
+# Plot of the the ratio of Ne*s in a population of males and females (i.e., Ne_mf*s_mf) relative to a population where males are "female-like" with 
+#   respect to the variance in fitness and strength of selection (i.e., Ne_ff*s_ff)
+
+# Setting up dataframe for plotting 
+Ne.df = as.data.frame(matrix(NA, nrow = 13, ncol = 6))
+names(Ne.df) = c("treatment", "population","Ne.mf", "Ne.ff", "ratio.of.Ne.mf.to.Ne.ff", "ratio.of.Nes")
+
+treatment.levels = levels(data.summary$treatment)
+population.type.levels = levels(as.factor((data.summary$population.type)))
+# Calculating the ratio r for each population type
+row = 0
+for (i in treatment.levels){
+  for (k in population.type.levels){
+    data.summary.subet.male = data.summary[data.summary$treatment == i & data.summary$sex == "male" & data.summary$population.type == k,]
+    data.summary.subet.female = data.summary[data.summary$treatment == i & data.summary$sex == "female" & data.summary$population.type == k,]
+    
+    if (nrow(data.summary.subet.male) > 0 & nrow(data.summary.subet.female) > 0) {
+      row = row + 1
+      Ne.df[row,"treatment"] = i
+      Ne.df[row,"population"] = as.integer(k)
+      
+      #calculating upper and lower CIs for mean, var and adj. var
+      Ne.df[row,"Ne.mf"] = as.numeric((8 *32) / (4 +  data.summary.subet.male$adjusted.variance + data.summary.subet.female$adjusted.variance))
+      Ne.df[row,"Ne.ff"] = as.numeric((8 *32) / (4 +  data.summary.subet.female$adjusted.variance + data.summary.subet.female$adjusted.variance))
+    }
+  }
+}
+Ne.df$ratio.of.Ne.mf.to.Ne.ff= Ne.df$Ne.mf / Ne.df$Ne.ff 
+Ne.df$ratio.of.Nes = Ne.df$Ne.mf / Ne.df$Ne.ff * 1.25
+names(Ne.df)[1:2] = c("treatment", "population")
+
+### Bootstrapping Ne*s ratio values to generate 95% CIs
+treatment = c("vial", "cage", "monogamy")
+population = c(1,2,3,4,5)
+
+Ne.df$Ne.mf.upper = NA
+Ne.df$Ne.mf.lower = NA
+Ne.df$Ne.ff.upper = NA
+Ne.df$Ne.ff.lower = NA
+
+Ne.df$Ne.s.ratio.upper = NA
+Ne.df$Ne.s.ratio.lower = NA
+#Ne.df$Ne.s.ff.upper = NA
+#Ne.df$Ne.s.ff.lower = NA
+
+for (i in treatment){
+  for (j in population){
+    tmp.female = subset(bootstrapped.data, bootstrapped.data$treatment == i & bootstrapped.data$sex == "female" & bootstrapped.data$population.type == j)$adjusted.variance
+    tmp.male = subset(bootstrapped.data, bootstrapped.data$treatment == i & bootstrapped.data$sex == "male" & bootstrapped.data$population.type == j)$adjusted.variance
+    
+    Ne.mf.tmp=c(NA, length = 10000)
+    Ne.ff.tmp=c(NA, length = 10000)
+    #Ne.mf.ratio = c(NA, length = 10000)
+    Nes.ratio = c(NA, length = 10000)
+    
+    for (k in 1:10000){
+      Ne.mf.tmp[k]=(8*32)/(tmp.male[k]+tmp.female[k]+4)
+      Ne.ff.tmp[k]=(8*32)/(tmp.female[k]+tmp.female[k]+4)
+      
+      Nes.ratio[k] = ( ((8*32)/(tmp.male[k]+tmp.female[k]+4)) / ((8*32)/(tmp.female[k]+tmp.female[k]+4)) ) * 1.25 
+    }
+    
+    if (i == "monogamy" & j == 2 | i == "monogamy" & j == 4) {
+      
+    } else {
+      Ne.df[Ne.df$treatment == i & Ne.df$population == j,]$Ne.mf.upper = quantile(Ne.mf.tmp, 0.95)
+      Ne.df[Ne.df$treatment == i & Ne.df$population == j,]$Ne.mf.lower = quantile(Ne.mf.tmp, 0.05)
+      Ne.df[Ne.df$treatment == i & Ne.df$population == j,]$Ne.ff.upper = quantile(Ne.ff.tmp, 0.95)
+      Ne.df[Ne.df$treatment == i & Ne.df$population == j,]$Ne.ff.lower = quantile(Ne.ff.tmp, 0.05)
+      
+      Ne.df[Ne.df$treatment == i & Ne.df$population == j,]$Ne.s.ratio.upper = quantile(Nes.ratio, 0.95)
+      Ne.df[Ne.df$treatment == i & Ne.df$population == j,]$Ne.s.ratio.lower = quantile(Nes.ratio, 0.05)
+      #Ne.df[Ne.df$treatment == i & Ne.df$population == j,]$Ne.s.ff.upper = quantile(Nes.ratio, 0.95)
+      #Ne.df[Ne.df$treatment == i & Ne.df$population == j,]$Ne.s.ff.lower = quantile(Nes.ratio, 0.05)
+    }
+  }
+}
+
+# Change labels of data for each population type for plotting convenience 
+Ne.df$population.type = Ne.df$population
+Ne.df$population.type = gsub(as.numeric(1), "A", Ne.df$population.type)
+Ne.df$population.type = gsub(as.numeric(2), "B", Ne.df$population.type)
+Ne.df$population.type = gsub(as.numeric(3), "C", Ne.df$population.type)
+Ne.df$population.type = gsub(as.numeric(4), "D", Ne.df$population.type)
+Ne.df$population.type = gsub(as.numeric(5), "E", Ne.df$population.type)
+
+# shapes to be consistent with figure 2:
+# Monogamy = 17; Complex environments = 16; Simple Environments = 15
+Nes.plot=ggplot(Ne.df, aes(y = ratio.of.Nes)) +
+  geom_point(aes(x=treatment, shape = treatment), size = 7.5,  position=position_dodge(width=0.5)) + scale_shape_manual(values=c(16, 17, 15)) +
+  #geom_point(aes(size=2, x=treatment),  position=position_dodge(0.5))+
+  geom_errorbar(aes(ymin=Ne.s.ratio.lower, ymax=Ne.s.ratio.upper,x=treatment),size = 2, width=0.0,position=position_dodge(0.5)) + 
+  theme_bw() +
+  ylim(0.5,2) +
+  theme(panel.grid.minor.x=element_blank(), panel.grid.minor.y=element_blank(), panel.grid.major.x=element_blank(), panel.grid.major.y=element_blank(),
+        text = element_text(size=40, family = "Times"), axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank(), 
+        axis.title.y = element_blank(), axis.text.y=element_text(colour = "black"), axis.ticks.y=element_line(colour = "black"),
+        strip.background = element_rect(colour = "black", fill = "light grey"), strip.text = element_text(size = 40), legend.position = "none") +
+  geom_hline(yintercept=1) +
+  scale_fill_manual(values = "#FFA500") +
+  facet_wrap(~population.type, nrow=1, strip.position = "bottom", scale = "free_x") 
+Nes.plot
+
+#
