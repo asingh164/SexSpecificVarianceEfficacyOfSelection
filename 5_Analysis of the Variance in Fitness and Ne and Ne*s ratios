@@ -34,11 +34,6 @@ data=read.csv("/FILE/PATH/TO/FitnessDataNeprojectFinalSept2020.csv", header = TR
 # Reading in data from bootstrap procedure 
 bootstrapped.data=read.csv("/FILE/PATH/TO/BootstrappedFitnessDataFinalSept2020.csv")
 
-data=read.csv("/Users/amardeepsingh/Dropbox/Grad School Stuff/My Research/Environmental Heterogeneity and Mating Regieme Project/Data/Data Files for Dryad/FitnessDataNeprojectFinalSept2020.csv", header = TRUE, sep = ",")
-# Reading in data from bootstrap procedure 
-bootstrapped.data=read.csv("/Users/amardeepsingh/Dropbox/Grad School Stuff/My Research/Environmental Heterogeneity and Mating Regieme Project/Data/Data Files for Dryad/BootstrappedFitnessDataFinalSept2020.csv")
-
-
 ##NOTE in these datasets population/population.type 1 and 2 refer to the low heterogenity treatments (i.e. 100% high/low condition individuals respectively)
 ## "high" and "low" refer to larval densities in the focal.individual column
 
