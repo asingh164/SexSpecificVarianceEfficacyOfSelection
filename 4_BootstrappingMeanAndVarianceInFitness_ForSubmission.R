@@ -10,8 +10,12 @@
 # This script will take the raw fitness data and bootstrap the mean and variance in sex-specific fitness for each population type and mating regime combination 10,000 times
 #   and then save the output to be used downstream.
 
+## Loading in R packages 
+require(Rcurl)
+
 # Loading fitness data into R and cleaning it up a bit
-data=read.csv("/FILE/PATH/TO/FitnessDataNeprojectFinalSept2020.csv", header = TRUE, sep = ",")
+data.github <- getURL("https://raw.githubusercontent.com/asingh164/SexSpecificVarianceEfficacyOfSelection/master/FitnessDataNeprojectFinalSept2020.csv")
+data=read.csv(text = data.github)
 data=as.data.frame(data)
 data$n.wt=as.numeric(as.character(data$n.wt))
 data=data[data$n.total == "32",] # Remove any observation where we have less than 32 offspring counted
