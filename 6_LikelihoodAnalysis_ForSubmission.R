@@ -33,9 +33,11 @@ require(Rmpfr)
 require(lattice)
 require(reshape2)
 require(gridExtra)
+require(Rcurl)
 
-# Read in fitness data 
-data=read.csv("/FILE/PATH/TO/FitnessDataNeprojectFinalSept2020.csv", header = TRUE, sep = ",")
+# Read in fitness data
+data.github = getURL("https://raw.githubusercontent.com/asingh164/SexSpecificVarianceEfficacyOfSelection/master/FitnessDataNeprojectFinalSept2020.csv")
+data=read.csv(text = data.github)
 data.summary = summaryBy(n.wt ~ as.factor(treatment) + as.factor(population.type) + as.factor(sex), data = data, FUN = c(mean, var), na.rm = TRUE)
 
 
