@@ -28,11 +28,14 @@ rm(list=ls())
 # Loading required packages 
 require(doBy)
 require(ggplot2)
+require(Rcurl)
 
 # Reading in fitness data
-data=read.csv("/FILE/PATH/TO/FitnessDataNeprojectFinalSept2020.csv", header = TRUE, sep = ",")
+data.github = getURL("https://raw.githubusercontent.com/asingh164/SexSpecificVarianceEfficacyOfSelection/master/FitnessDataNeprojectFinalSept2020.csv")
+data=read.csv(text = data.github)
 # Reading in data from bootstrap procedure 
-bootstrapped.data=read.csv("/FILE/PATH/TO/BootstrappedFitnessDataFinalSept2020.csv")
+bootstrapped.data.github getURL("https://raw.githubusercontent.com/asingh164/SexSpecificVarianceEfficacyOfSelection/master/BootstrappedFitnessDataFinalSept2020.csv")
+bootstrapped.data=read.csv(text=bootstrapped.data.github)
 
 ##NOTE in these datasets population/population.type 1 and 2 refer to the low heterogenity treatments (i.e. 100% high/low condition individuals respectively)
 ## "high" and "low" refer to larval densities in the focal.individual column
