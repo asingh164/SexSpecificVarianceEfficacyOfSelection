@@ -22,9 +22,12 @@ rm(list=ls())
 require(doBy)
 require(ggplot2)
 require(wesanderson) # Don't think I used this, but maybe I'll go back and make the files look nice
+require(RCurl)
+
 
 ##  Reading body size data into R
-bodysize.data=read.csv("/FILE/PATH/TO/DATA/BodyMassDataNeprojectFinalSept2020.csv")
+bodysize.data.github <- getURL("https://raw.githubusercontent.com/asingh164/SexSpecificVarianceEfficacyOfSelection/master/BodyMassDataNeprojectFinalSept2020.csv")
+bodysize.data=read.csv(text = bodysize.data.github)
 
 
 ###############################################
