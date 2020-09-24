@@ -20,6 +20,9 @@ rm(list=ls())
 ## Loading packages  
 require(ggplot2)
 require(doBy)
+require(RCurl)
+
+
 
 # Setting up Functions that I will use for data summary
 # Functions for calculating 5% and 95% quantiles for data summary 
@@ -28,8 +31,11 @@ quantile.function.lower = function(x) {quantile(x, c(0.05))}
 quantile.function.upper = function(x) {quantile(x, c(0.95))}
 
 #  Read in fitness data
-data = read.csv("/FILE/PATH/TO/FitnessDataNeprojectFinalSept2020.csv", header = TRUE, sep = ",")
-data=subset(data, data$n.total=="32") # Clean data out for any row where we counted less than 32 offspring 
+##  Reading body size data into R
+data.github <- getURL("https://raw.githubusercontent.com/asingh164/SexSpecificVarianceEfficacyOfSelection/master/FitnessDataNeprojectFinalSept2020.csv")
+
+data.raw=read.csv(text = data.github)
+data=subset(data.raw, data.raw$n.total=="32") # Clean data out for any row where we counted less than 32 offspring 
 
 # We could only estimate selection in populations where we had both high- and low-condition flies so remove all data associated with population types 1 and 5
 data.hetsub = data[data$population != 1 & data$population != 5,]
