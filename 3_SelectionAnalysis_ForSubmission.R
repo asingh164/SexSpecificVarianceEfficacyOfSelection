@@ -32,7 +32,7 @@ quantile.function.upper = function(x) {quantile(x, c(0.95))}
 
 #  Read in fitness data
 ##  Reading body size data into R
-data.github <- getURL("https://raw.githubusercontent.com/asingh164/SexSpecificVarianceEfficacyOfSelection/master/BodyMassDataNeprojectFinalSept2020.csv")
+data.github = getURL("https://raw.githubusercontent.com/asingh164/SexSpecificVarianceEfficacyOfSelection/master/FitnessDataNeprojectFinalSept2020.csv")
 data=read.csv(text = data.github)
 data=subset(data.raw, data.raw$n.total=="32") # Clean data out for any row where we counted less than 32 offspring 
 
