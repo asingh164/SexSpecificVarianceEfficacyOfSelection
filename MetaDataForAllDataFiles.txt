@@ -1,5 +1,5 @@
 ### Metadata for all data files 
-## Data correspond to Singh A., A.F. Agrawal. 2020. Sex-specific Variance and the Efficacy of Selection
+## Data correspond to Singh A., A.F. Agrawal. 2021. Sex-specific Variance and the Efficacy of Selection
 
 ###########################################################################
 ###########################################################################
