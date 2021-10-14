@@ -2,8 +2,8 @@
 ###########################################################################################################################################
 ###########################################################################################################################################
 ###   Script Details:                                                                                                                   ###
-###   Bodysize Analysis and Plots for Singh, A. A.F., Agrawal. 2020. Sex-Specific Variance in Fitness and the Efficacy of Selection     ###
-###   Script written by Amardeep Singh (amardeep.singh[at]utoronto.ca)                                                                  ###
+###   Bodysize Analysis and Plots for Singh, A. and A.F., Agrawal. 2021. Sex-Specific Variance in Fitness and the Efficacy of Selection ###
+###   Script written by Amardeep Singh (amardeep.singh[at]alum.utoronto.ca)                                                             ###
 ###   This script will summarize sex-specific bodymass data from experiment either seperate for each stock, or avageraing across stocks ###
 ###########################################################################################################################################
 ###########################################################################################################################################
@@ -22,12 +22,10 @@ rm(list=ls())
 require(doBy)
 require(ggplot2)
 require(wesanderson) # Don't think I used this, but maybe I'll go back and make the files look nice
-require(RCurl)
-
 
 ##  Reading body size data into R
-bodysize.data.github <- getURL("https://raw.githubusercontent.com/asingh164/SexSpecificVarianceEfficacyOfSelection/master/BodyMassDataNeprojectFinalSept2020.csv")
-bodysize.data=read.csv(text = bodysize.data.github)
+# Original location of data was: /Users/amardeepsingh/Dropbox/Grad School Stuff/My Research/Environmental Heterogeneity and Mating Regieme Project/Data/Data Files for Dryad
+bodysize.data=read.csv("/FILE/PATH/TO/DATA/BodyMassDataNeprojectFinalSept2020.csv")
 
 
 ###############################################
