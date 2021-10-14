@@ -14,7 +14,7 @@
 require(Rcurl)
 
 # Loading fitness data into R and cleaning it up a bit
-data.github <- getURL("https://raw.githubusercontent.com/asingh164/SexSpecificVarianceEfficacyOfSelection/master/FitnessDataNeprojectFinalSept2020.csv")
+data.github <- getURL("https://raw.githubusercontent.com/asingh164/SexSpecificVarianceEfficacyOfSelection/master/BootstrappedFitnessDataFinalJuly2021.csv")
 data=read.csv(text = data.github)
 data=as.data.frame(data)
 data$n.wt=as.numeric(as.character(data$n.wt))
