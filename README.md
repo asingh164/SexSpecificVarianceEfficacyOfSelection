@@ -9,7 +9,7 @@ The variance in fitness is thought to be greater in males than in females in man
 
 
 ## Code 
-All code is written in R. Coding scripts are ordered roughly in the order that the data are presented in the paper. All figures and tables in the paper and supplement are replicable (with the code provided). <i>NOTE: Although the data in the figures are identical to those that appear in the paper + supplement, the figures will not be exactly the same as I processed figures after generating the basic plot in R (Fonts, labels, panels etc.).</i>
+All code is written in R. Coding scripts are ordered roughly in the order that the data are presented in the paper. All figures and tables in the paper and supplement are replicable (with the code provided). <i>NOTE: Two things. First, although the data in the figures are identical to those that appear in the paper + supplement, the figures will not be exactly the same as I processed figures after generating the basic plot in R (Fonts, labels, panels etc.). Second, as the paper was revised some of the figures that were in the main text were moved to the supplement or removed entirely so these scripts might refer to the wrong figure or figures that don't exist anymore. I'll try my best to clean the scripts up but as of now there might still be some issues but all the figures in the main text can be replicated with these scripts.</i>
 
 <i><b>Be sure to read the info a the top of each script. There are several places where you will need to specify a file path either to an input data file or for saving outputs of data or figures</i></b>
 
