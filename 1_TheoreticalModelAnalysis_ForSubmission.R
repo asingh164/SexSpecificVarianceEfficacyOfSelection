@@ -2,8 +2,8 @@
 ###########################################################################################################################################
 ###########################################################################################################################################
 ###   Script Details:                                                                                                                   ###
-###   Plotting model results for Singh, A. A.F., Agrawal. 2020. Sex-Specific Variance in Fitness and the Efficacy of Selection          ###
-###   Script written by Amardeep Singh (amardeep.singh[at]utoronto.ca)                                                                  ###
+###   Plotting model results for Singh, A. and A.F., Agrawal. 2021. Sex-Specific Variance in Fitness and the Efficacy of Selection      ###
+###   Script written by Amardeep Singh (amardeep.singh[at]alum.utoronto.ca)                                                             ###
 ###   This script will plot the result of a model used to assess the relationship between condition dependency of fitness in males      ###
 ###     and the efficacy of selection                                                                                                   ###
 ###########################################################################################################################################
