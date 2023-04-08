@@ -1,8 +1,8 @@
 # Sex Specific Variance and the Efficacy of Selection
 
-This repository contains code and data underlying the figures and analyses associated with [Singh A., and A.F., Agrawal. 2022. Sex Specific Variance and the Efficacy of Selection. The American Naturalist. 199(5): https://doi.org/10.1086/719015](https://doi.org/10.1086/719015)
+This repository contains code and data underlying the figures and analyses associated with [Singh A., and A.F., Agrawal, 2022](https://doi.org/10.1086/719015)
 
-##### Citation: [Singh A., and A.F., Agrawal. 2022. Sex Specific Variance and the Efficacy of Selection. The American Naturalist. 199(5): https://doi.org/10.1086/719015](https://doi.org/10.1086/719015)
+##### Citation: [Singh A., and A.F., Agrawal. 2022. Sex Specific Variance and the Efficacy of Selection. The American Naturalist. 199(5):doi.org/10.1086/719015](https://doi.org/10.1086/719015)
 
 ## Abstract: 
 The variance in fitness is thought to be greater in males than in females in many species. If this is so, there are two potentially contradictory consequences on the efficacy of selection (Nes): greater variance in fitness may allow stronger selection (i.e., increased s) but it will also cause stronger genetic drift (i.e., reduced Ne). We develop a simple model to ask how the stronger condition-dependency of fitness in males than females affects selection and fitness variance in each sex to examine the net effect on the efficacy of selection. We measured the phenotypic variance in fitness for each sex in Drosophila melanogaster in different environmental and mating contexts. The variance in fitness was only ~1.5-2 times higher in males than females; juvenile mortality likely dampens the difference in variation between the sexes. Combining these results with previous studies of sex-specific selection on mutations, we infer that the increased drift due to males counterbalances the stronger selection on males in this species, leaving Nes similar to what would be expected if both sexes where ‘female-like’ with respect to selection and variance in fitness. Reasons why this could differ in other species are discussed.
